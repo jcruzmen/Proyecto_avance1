@@ -109,7 +109,7 @@ p2 = Guardian.new("Roco", "30 meses", "Plomo", "Maria", "Gamboa", "09786587", 7,
 p3 = Compania.new("Manchas", "20 meses", "Marron", "Anderson", "Berrocal", "09876543", 10, 10, 8)
 p4 = Compania.new("Vladi", "40 meses", "Negro", "Fernando", "Cruz", "56382601", 6, 6, 7)
 p5 = Comun.new("Bambi", "34 meses", "Naranja", "Junior", "Ponce", "54831098", 8, 9, 9)
-p6 = Comun.new("Kina", "29 meses", "Blanco", "Orlando", "Cevallos", "83120956", 7, 3, 10)
+p6 = Comun.new("Firulais", "29 meses", "Blanco", "Orlando", "Cevallos", "83120956", 7, 3, 10)
 can = Asociacion.new
 can.registrar(p1)
 can.registrar(p2)
