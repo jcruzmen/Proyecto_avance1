@@ -1,7 +1,7 @@
 class Mascota
-	attr_accessor :nom_mascota, :edad, :color, :nom_dueño, :ape_dueño, :dni, :puntaje_postura
-	def initialize(nom_mascota, edad, color, nom_dueño, ape_dueño, dni, puntaje_postura)
-		@nom_mascota, @edad, @color, @nom_dueño, @ape_dueño, @dni, @puntaje_postura = nom_mascota, edad, color, nom_dueño, ape_dueño, dni, puntaje_postura
+	attr_accessor :nom_mascota, :edad, :color, :nom_dueño, :ape_dueño, :dni
+	def initialize(nom_mascota, edad, color, nom_dueño, ape_dueño, dni)
+		@nom_mascota, @edad, @color, @nom_dueño, @ape_dueño, @dni = nom_mascota, edad, color, nom_dueño, ape_dueño, dni
 	end
 	def calcular_puntaje
 		
@@ -24,10 +24,10 @@ class Mascota
 end
 
 class Guardian < Mascota
-	attr_accessor :puntaje_raza, :puntaje_habilidad
+	attr_accessor :puntaje_postura, :puntaje_raza, :puntaje_habilidad
 	def initialize(nom_mascota, edad, color, nom_dueño, ape_dueño, dni, puntaje_postura, puntaje_raza, puntaje_habilidad)
-		super(nom_mascota, edad, color, nom_dueño, ape_dueño, dni, puntaje_postura)
-		@puntaje_raza, @puntaje_habilidad = puntaje_raza, puntaje_habilidad
+		super(nom_mascota, edad, color, nom_dueño, ape_dueño, dni)
+		@puntaje_postura, @puntaje_raza, @puntaje_habilidad = puntaje_postura, puntaje_raza, puntaje_habilidad
 	end
 
 	def calcular_puntaje
@@ -39,10 +39,10 @@ class Guardian < Mascota
 end
 
 class Compania < Mascota
-	attr_accessor :puntaje_raza, :puntaje_pelaje
+	attr_accessor :puntaje_postura, :puntaje_raza, :puntaje_pelaje
 	def initialize(nom_mascota, edad, color, nom_dueño, ape_dueño, dni, puntaje_postura, puntaje_raza, puntaje_pelaje)
-		super(nom_mascota, edad, color, nom_dueño, ape_dueño, dni, puntaje_postura)
-		@puntaje_raza, @puntaje_pelaje = puntaje_raza, puntaje_pelaje
+		super(nom_mascota, edad, color, nom_dueño, ape_dueño, dni)
+		@puntaje_postura, @puntaje_raza, @puntaje_pelaje = puntaje_postura, puntaje_raza, puntaje_pelaje
 	end
 	def calcular_puntaje
 	(puntaje_postura + puntaje_raza + puntaje_pelaje)
@@ -54,10 +54,10 @@ end
 
 
 class Comun < Mascota
-	attr_accessor :puntaje_publico, :puntaje_disciplina
+	attr_accessor :puntaje_postura, :puntaje_publico, :puntaje_disciplina
 	def initialize(nom_mascota, edad, color, nom_dueño, ape_dueño, dni, puntaje_postura, puntaje_publico, puntaje_disciplina)
-		super(nom_mascota, edad, color, nom_dueño, ape_dueño, dni, puntaje_postura)
-		@puntaje_publico, @puntaje_disciplina = puntaje_publico, puntaje_disciplina
+		super(nom_mascota, edad, color, nom_dueño, ape_dueño, dni)
+		@puntaje_postura, @puntaje_publico, @puntaje_disciplina = puntaje_postura, puntaje_publico, puntaje_disciplina
 		
 	end
 	def calcular_puntaje
@@ -75,7 +75,16 @@ class Asociacion
 		@arreglo_perro = []
 	end
 	def registrar(perros)
+		if not validar_dni(perros.dni)
 		arreglo_perro.push(perros)
+		else
+			puts "================================================================"
+			puts "El DNI #{perros.dni} de #{perros.nom_dueño} #{perros.ape_dueño} ya se encuentra registrado"
+			puts "================================================================"
+		end
+	end
+	def obtener_participantes
+		return arreglo_perro
 	end
 	def obtener_perro_categoria(categoria)
 		dog = []
@@ -99,17 +108,41 @@ class Asociacion
 	end
 	def obtener_cantidad
 		dog.size
-
 	end
+	def validar_dni(dni)
+ 		encuentra = false
+		for p in arreglo_perro
+			if p.dni == dni
+				encuentra = true
+				break
+			end
+		end
+		return encuentra
+	end
+
+end
+
+class Factory
+	def self.crear_objeto(categoria, *arg)
+		case categoria
+			when "Guardian"
+				return Guardian.new(arg[0], arg[1], arg[2], arg[3], arg[4], arg[5], arg[6], arg[7], arg[8])
+			when "Compania"
+				return Compania.new(arg[0], arg[1], arg[2], arg[3], arg[4], arg[5], arg[6], arg[7], arg[8])
+			when "Comun"
+				return Comun.new(arg[0], arg[1], arg[2], arg[3], arg[4], arg[5], arg[6], arg[7], arg[8])
+		end
+	end
+
 end
 
 
-p1 = Guardian.new("Boby", "26 meses", "Blanco", "Angelo", "Carrasco", "71197137", 10, 10,10)
-p2 = Guardian.new("Roco", "30 meses", "Plomo", "Maria", "Gamboa", "09786587", 7, 7, 9)
-p3 = Compania.new("Manchas", "20 meses", "Marron", "Anderson", "Berrocal", "09876543", 10, 10, 8)
-p4 = Compania.new("Vladi", "40 meses", "Negro", "Fernando", "Cruz", "56382601", 6, 6, 7)
-p5 = Comun.new("Bambi", "34 meses", "Naranja", "Junior", "Ponce", "54831098", 8, 9, 9)
-p6 = Comun.new("Firulais", "29 meses", "Blanco", "Orlando", "Cevallos", "83120956", 7, 3, 10)
+p1 = Factory.crear_objeto("Guardian", "Boby", "26 meses", "Blanco", "Angelo", "Carrasco", "71197137", 10, 10,10)
+p2 = Factory.crear_objeto("Guardian", "Roco", "30 meses", "Plomo", "Maria", "Gamboa", "09786587", 7, 7, 9)
+p3 = Factory.crear_objeto("Compania", "Manchas", "20 meses", "Marron", "Anderson", "Berrocal", "09876543", 10, 10, 8)
+p4 = Factory.crear_objeto("Compania", "Vladi", "40 meses", "Negro", "Fernando", "Cruz", "56382601", 6, 6, 7)
+p5 = Factory.crear_objeto("Comun", "Bambi", "34 meses", "Naranja", "Junior", "Ponce", "54831098", 8, 9, 9)
+p6 = Factory.crear_objeto("Comun", "Firulais", "29 meses", "Blanco", "Orlando", "Cevallos", "83120956", 7, 3, 10)
 can = Asociacion.new
 can.registrar(p1)
 can.registrar(p2)
@@ -118,13 +151,11 @@ can.registrar(p4)
 can.registrar(p5)
 can.registrar(p6)
 
-arreglo = can.arreglo_perro
-		puts "===================================================="
-		puts "Nombre y apellido del dueño | Nombre del perro"
-		puts "===================================================="
-	for p in arreglo
-		puts "#{p.nom_dueño} #{p.ape_dueño} 				#{p.nom_mascota}"	
+listar = can.obtener_participantes
+	for p in listar
+		puts "#{p.nom_mascota} #{p.nom_dueño} #{p.ape_dueño}"	
 	end
+
 canino = can.arreglo_perro
 	puts "===================================================="
 	puts "Puntaje de los perros"
