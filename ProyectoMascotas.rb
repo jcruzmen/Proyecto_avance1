@@ -5,6 +5,7 @@ class Mascota
 	end
 	def calcular_puntaje
 		
+		calcular_puntaje + puntaje_extra_final
 	end
 	def puntaje_extra_final
 		if calcular_promedio > 7 
@@ -130,21 +131,21 @@ canino = can.arreglo_perro
 	puts "Puntaje de los perros"
 	puts "===================================================="
 	for p in canino	
-		puts "#{p.nom_mascota} de #{p.edad} edad, es de color #{p.color} y su puntaje es:	#{p.puntaje_extra_final}"
+		puts "#{p.nom_mascota} de #{p.edad} edad, es de color #{p.color} y su puntaje es:	#{p.calcular_puntaje}"
 	end
 perros_categoria = can.obtener_perro_categoria("Guardian")
 	puts "===================================================="
 	puts "Participante de la categoria Guardian"
 	puts "===================================================="
 	for p in perros_categoria
-		puts "#{p.nom_mascota}	#{p.edad}	#{p.color}	#{p.nom_dueño}	#{p.ape_dueño}	#{p.dni}	#{p.puntaje_extra_final}"
+		puts "#{p.nom_mascota}	#{p.edad}	#{p.color}	#{p.nom_dueño}	#{p.ape_dueño}	#{p.dni}	#{p.calcular_puntaje}"
 	end
 campeon = can.mascota_ganador
 	puts "===================================================="
 	puts "					CAMPEON                           "
 	puts "===================================================="
-	puts "El perro ganador es: #{campeon.nom_mascota} con un puntaje de:#{campeon.puntaje_extra_final} puntos"
+	puts "El perro ganador es: #{campeon.nom_mascota} con un puntaje de:#{campeon.calcular_puntaje} puntos"
 
 cantidad = can.obtener_perro_categoria("Guardian")
 	puts "===================================================="
-	puts "Total: #{cantidad.size}"
+	puts "Total de participantes: #{cantidad.size}"
